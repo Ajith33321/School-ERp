@@ -22,9 +22,38 @@ import {
     Bus,
     Home,
     MessageSquare,
-    HeartHandshake
+    HeartHandshake,
+    CreditCard,
+    Award,
+    Monitor,
+    BookMarked,
+    Calculator,
+    Globe,
+    Smartphone,
+    UserPlus,
+    Mail,
+    Chrome,
+    Image,
+    MessageCircle,
+    Camera
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
+
+interface SubMenuItem {
+    label: string;
+    path: string;
+    badge?: string;
+}
+
+interface MenuItem {
+    id: string;
+    label: string;
+    icon: any;
+    path?: string;
+    subItems?: SubMenuItem[];
+    color: string;
+    badge?: string;
+}
 
 interface SidebarProps {
     isOpen: boolean;
@@ -32,12 +61,16 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
-    const menuItems = [
+    const menuItems: MenuItem[] = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', color: 'blue' },
+        { id: 'branch', label: 'Branch', icon: Building2, path: '/branch', color: 'orange', badge: 'Pro' },
         {
             id: 'admissions', label: 'Admissions', icon: GraduationCap, subItems: [
+                { label: 'Online Admission', path: '/online-admission' },
                 { label: 'Applications', path: '/applications' },
                 { label: 'New Admission', path: '/students/admit' },
+                { label: 'ID Cards', path: '/id-cards' },
+                { label: 'Certificates', path: '/certificates' },
             ], color: 'indigo'
         },
         { id: 'students', label: 'Students', icon: Users, path: '/users', color: 'cyan' },
@@ -45,7 +78,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             id: 'academics', label: 'Academics', icon: BookOpen, subItems: [
                 { label: 'Classes & Sections', path: '/academic/classes' },
                 { label: 'Subjects', path: '/academic/subjects' },
-                { label: 'Timetable', path: '/academic/timetable' },
+                { label: 'Routines', path: '/academic/timetable' },
+                { label: 'Study Materials', path: '/study-materials', badge: 'Pro' },
             ], color: 'purple'
         },
         { id: 'homework', label: 'Homework', icon: ClipboardList, path: '/homework', color: 'pink' },
@@ -61,31 +95,35 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 { label: 'Exam Setup', path: '/exams/setup' },
                 { label: 'Schedules', path: '/exams/schedules' },
                 { label: 'Mark Entry', path: '/exams/marks' },
+                { label: 'Online Examination', path: '/online-examination' },
             ], color: 'amber'
         },
         {
             id: 'finance', label: 'Finance', icon: DollarSign, subItems: [
                 { label: 'Fee Setup', path: '/finance/setup' },
                 { label: 'Fee Collection', path: '/finance/collect' },
+                { label: 'Accounts', path: '/accounts' },
             ], color: 'orange'
         },
         {
-            id: 'library', label: 'Library', icon: Library, subItems: [
-                { label: 'Books Master', path: '/library/books' },
-                { label: 'Issue/Return', path: '/library/issue' },
-            ], color: 'teal'
+            id: 'payroll', label: 'Payroll', icon: Wallet, subItems: [
+                { label: 'Salary Setup', path: '/payroll/setup' },
+                { label: 'Payroll Batches', path: '/payroll/batches' },
+            ], color: 'emerald'
         },
         {
-            id: 'inventory', label: 'Inventory', icon: Boxes, subItems: [
-                { label: 'Item Master', path: '/inventory/items' },
+            id: 'facilities', label: 'Facilities', icon: Library, subItems: [
+                { label: 'Library', path: '/library/books' },
+                { label: 'Book Issue', path: '/library/issue' },
+                { label: 'Inventory', path: '/inventory/items' },
                 { label: 'Stock Inward', path: '/inventory/stock-in' },
-            ], color: 'orange'
+            ], color: 'teal'
         },
         {
             id: 'transport', label: 'Transport', icon: Bus, subItems: [
                 { label: 'Vehicles', path: '/transport/vehicles' },
                 { label: 'Routes', path: '/transport/routes' },
-            ], color: 'blue'
+            ], color: 'blue', badge: 'New'
         },
         {
             id: 'hostel', label: 'Hostel', icon: Home, subItems: [
@@ -94,18 +132,40 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             ], color: 'indigo'
         },
         {
+            id: 'communication', label: 'Communication', icon: MessageSquare, subItems: [
+                { label: 'Broadcast', path: '/comm/broadcast' },
+                { label: 'Templates', path: '/comm/templates' },
+                { label: 'Live Chat', path: '/live-chat' },
+            ], color: 'cyan'
+        },
+        {
             id: 'hr', label: 'HR Management', icon: HeartHandshake, subItems: [
                 { label: 'Staff Directory', path: '/hr/staff' },
                 { label: 'Leave Management', path: '/hr/leave' },
             ], color: 'pink'
         },
         {
-            id: 'communication', label: 'Communication', icon: MessageSquare, subItems: [
-                { label: 'Broadcast', path: '/comm/broadcast' },
-                { label: 'Templates', path: '/comm/templates' },
-            ], color: 'cyan'
+            id: 'management', label: 'Management', icon: ClipboardList, subItems: [
+                { label: 'Reports', path: '/reports' },
+                { label: 'Subscribers', path: '/subscribers' },
+                { label: 'Contact Messages', path: '/contact-messages' },
+            ], color: 'violet'
         },
-        { id: 'settings', label: 'Settings', icon: Settings, path: '/settings', color: 'slate' },
+        {
+            id: 'website', label: 'Website', icon: Chrome, subItems: [
+                { label: 'Website Setup', path: '/website' },
+                { label: 'Gallery', path: '/gallery' },
+                { label: 'Forums', path: '/forums' },
+                { label: 'Memories', path: '/memories' },
+            ], color: 'sky'
+        },
+        {
+            id: 'settings', label: 'Settings', icon: Settings, subItems: [
+                { label: 'General Settings', path: '/settings' },
+                { label: 'Language', path: '/language' },
+                { label: 'App Settings', path: '/app-settings' },
+            ], color: 'slate'
+        },
     ];
 
     const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -219,6 +279,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                                             {isOpen && (
                                                 <>
                                                     <span className="ml-4 flex-1 text-left">{item.label}</span>
+                                                    {item.badge && (
+                                                        <span className={cn(
+                                                            "px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider",
+                                                            item.badge === 'Pro' ? "bg-orange-500/20 text-orange-400" : "bg-blue-500/20 text-blue-400"
+                                                        )}>
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
                                                     {expandedItems.includes(item.id) ? <ChevronDown size={18} className="text-slate-500" /> : <ChevronRight size={18} className="text-slate-500" />}
                                                 </>
                                             )}
@@ -230,11 +298,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                                                         key={sub.path}
                                                         to={sub.path}
                                                         className={({ isActive }) => cn(
-                                                            "block px-4 py-2.5 text-xs font-bold rounded-xl transition-all duration-300",
+                                                            "flex items-center justify-between px-4 py-2.5 text-xs font-bold rounded-xl transition-all duration-300",
                                                             isActive ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
                                                         )}
                                                     >
-                                                        {sub.label}
+                                                        <span>{sub.label}</span>
+                                                        {sub.badge && (
+                                                            <span className={cn(
+                                                                "px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-wider",
+                                                                sub.badge === 'Pro' ? "bg-orange-500/20 text-orange-400" : "bg-blue-500/20 text-blue-400"
+                                                            )}>
+                                                                {sub.badge}
+                                                            </span>
+                                                        )}
                                                     </NavLink>
                                                 ))}
                                             </div>
@@ -242,7 +318,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                                     </div>
                                 ) : (
                                     <NavLink
-                                        to={item.path}
+                                        to={item.path!}
                                         className={({ isActive }) => cn(
                                             "flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all duration-300",
                                             getColorClass(item.color, isActive),

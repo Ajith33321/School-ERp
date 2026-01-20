@@ -41,6 +41,24 @@ import LeaveManagement from './pages/hr/LeaveManagement';
 import StaffDirectory from './pages/hr/StaffDirectory';
 import GeneralSettings from './pages/settings/GeneralSettings';
 import AcademicSessions from './pages/settings/AcademicSessions';
+import PlaceholderPage from './components/PlaceholderPage';
+import BranchManagement from './pages/admin/BranchManagement';
+import IDCardGeneration from './pages/admin/IDCardGeneration';
+import CertificateGeneration from './pages/admin/CertificateGeneration';
+import ReportsAnalytics from './pages/reports/ReportsAnalytics';
+import StudyMaterials from './pages/academic/StudyMaterials';
+import OnlineExamination from './pages/exams/OnlineExamination';
+import SubscribersCRM from './pages/crm/SubscribersCRM';
+import AccountsFinance from './pages/finance/AccountsFinance';
+import ContactMessages from './pages/website/ContactMessages';
+import WebsiteSetup from './pages/website/WebsiteSetup';
+import Gallery from './pages/website/Gallery';
+import Forums from './pages/community/Forums';
+import Memories from './pages/community/Memories';
+import LiveChat from './pages/support/LiveChat';
+import LanguageSettings from './pages/settings/LanguageSettings';
+import AppSettings from './pages/settings/AppSettings';
+import OnlineAdmissionPortal from './pages/public/OnlineAdmissionPortal';
 
 // Pages (Placeholders for now)
 
@@ -91,6 +109,26 @@ const App: React.FC = () => {
                     <Route path="/hr/staff" element={<StaffDirectory />} />
                     <Route path="/academic-years" element={<AcademicSessions />} />
                     <Route path="/settings" element={<GeneralSettings />} />
+
+                    {/* New Module Routes */}
+                    <Route path="/branch" element={<BranchManagement />} />
+                    <Route path="/online-admission" element={<OnlineAdmissionPortal />} />
+                    <Route path="/id-cards" element={<IDCardGeneration />} />
+                    <Route path="/certificates" element={<CertificateGeneration />} />
+                    <Route path="/study-materials" element={<StudyMaterials />} />
+                    <Route path="/online-examination" element={<OnlineExamination />} />
+                    <Route path="/accounts" element={<AccountsFinance />} />
+                    <Route path="/live-chat" element={<LiveChat />} />
+                    <Route path="/reports" element={<ReportsAnalytics />} />
+                    <Route path="/subscribers" element={<SubscribersCRM />} />
+                    <Route path="/contact-messages" element={<ContactMessages />} />
+                    <Route path="/website" element={<WebsiteSetup />} />
+                    <Route path="/gallery" element={<Gallery />} />
+                    <Route path="/forums" element={<Forums />} />
+                    <Route path="/memories" element={<Memories />} />
+                    <Route path="/language" element={<LanguageSettings />} />
+                    <Route path="/app-settings" element={<AppSettings />} />
+
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                 </Route>
 

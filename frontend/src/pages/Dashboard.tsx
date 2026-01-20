@@ -9,7 +9,10 @@ import {
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 
+import { useNavigate } from 'react-router-dom';
+
 const Dashboard: React.FC = () => {
+    const navigate = useNavigate();
     const stats = [
         { label: 'Total Students', value: '1,284', icon: GraduationCap, color: 'blue', trend: '+12.5%', iconColor: 'text-blue-500', bgGradient: 'from-blue-500/10 to-transparent' },
         { label: 'Active Teachers', value: '86', icon: Users, color: 'emerald', trend: '+2.4%', iconColor: 'text-emerald-500', bgGradient: 'from-emerald-500/10 to-transparent' },
@@ -35,7 +38,10 @@ const Dashboard: React.FC = () => {
                     <button className="px-6 py-3 bg-white border-2 border-slate-100 rounded-2xl text-slate-700 font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm active:scale-95">
                         Download Report
                     </button>
-                    <button className="btn-3d btn-3d-primary">
+                    <button
+                        onClick={() => navigate('/students/admit')}
+                        className="btn-3d btn-3d-primary"
+                    >
                         <Users size={20} />
                         Add Student
                     </button>

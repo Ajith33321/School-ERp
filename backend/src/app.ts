@@ -20,6 +20,7 @@ import commRoutes from './routes/commRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
+import branchRoutes from './routes/branchRoutes.js';
 
 const app: Application = express();
 
@@ -54,6 +55,7 @@ app.use('/api/comm', commRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/branches', branchRoutes);
 
 // Base Route
 app.get('/', (req: Request, res: Response) => {

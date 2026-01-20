@@ -86,17 +86,76 @@ CREATE TABLE IF NOT EXISTS sessions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Audit Logs
+-- Audit Log
 CREATE TABLE IF NOT EXISTS audit_logs (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
     organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
-    action VARCHAR(255) NOT NULL,
-    module VARCHAR(100) NOT NULL,
-    details JSONB,
-    ip_address VARCHAR(45),
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(100) NOT NULL,
+    entity_type VARCHAR(100),
+    entity_id UUID,
+    old_values JSONB,
+    new_values JSONB,
+    ip_address VARCHAR(50),
+    user_agent TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Phase 13: Branch Management Tables
+
+-- Branches (Multi-campus support)
+CREATE TABLE IF NOT EXISTS branches (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+    branch_name VARCHAR(255) NOT NULL,
+    branch_code VARCHAR(50) NOT NULL,
+    address TEXT,
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100) DEFAULT 'India',
+    pincode VARCHAR(20),
+    contact_person VARCHAR(255),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    principal_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    is_main_branch BOOLEAN DEFAULT FALSE,
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(organization_id, branch_code)
+);
+
+-- Branch Users (Staff assignment to branches)
+CREATE TABLE IF NOT EXISTS branch_users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    branch_id UUID REFERENCES branches(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    role_id UUID REFERENCES roles(id) ON DELETE SET NULL,
+    assigned_date DATE DEFAULT CURRENT_DATE,
+    is_primary_branch BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(branch_id, user_id)
+);
+
+-- Branch Students (Student assignment to branches)
+CREATE TABLE IF NOT EXISTS branch_students (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    branch_id UUID REFERENCES branches(id) ON DELETE CASCADE,
+    student_id UUID, -- Will reference students table when created
+    academic_year_id UUID, -- Will reference academic_years table when created
+    assigned_date DATE DEFAULT CURRENT_DATE,
+    transfer_date DATE,
+    transfer_reason TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_branches_organization ON branches(organization_id);
+CREATE INDEX IF NOT EXISTS idx_branches_status ON branches(status);
+CREATE INDEX IF NOT EXISTS idx_branch_users_branch ON branch_users(branch_id);
+CREATE INDEX IF NOT EXISTS idx_branch_users_user ON branch_users(user_id);
+CREATE INDEX IF NOT EXISTS idx_branch_students_branch ON branch_students(branch_id);
+CREATE INDEX IF NOT EXISTS idx_branch_students_student ON branch_students(student_id);
 
 -- Indices for performance
 CREATE INDEX idx_users_org ON users(organization_id);
